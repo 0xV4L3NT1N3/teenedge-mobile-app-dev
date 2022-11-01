@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-// these are my school notes
+import 'services/quote_api.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,46 +9,72 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var quote = "This is an old quote";
-  // This widget is the root of your application.
+
+  // variables holding quote and author data, set to loading... at first
+
+  String quote = 'loading ...';
+  String author = 'loading ...';
+
+  // get quote API data, store the data above
+
+  void getQuote () async {
+    QuoteAPI newQuote = QuoteAPI();
+    Map data = await newQuote.getData();
+    setState(() {
+      quote = data["content"];
+      author = data["author"];
+    });
+  }
+
+  @override
+  void initState() {
+
+    // get quote on start
+
+    super.initState();
+    getQuote();
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
+          leading: Icon(Icons.drive_file_rename_outline, size: 30, color: Colors.black54),
           centerTitle: true,
-          backgroundColor: Colors.red[400],
-          title: Text("Minecraft Quotes"),
-          leading: Image.asset("images/logo.jpg", height: 10.0, width: 1.0),
+          title: Text('Minimal Quotes', style: TextStyle(color: Colors.black54)),
+          backgroundColor: Colors.grey[50],
+          elevation: 0,
         ),
-        backgroundColor: Colors.grey[200],
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Center(
-              child: Text(
-                quote,
-                style: TextStyle(fontSize: 25, color: Colors.red[400]),
+        body: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(quote,
+                  style: TextStyle(fontSize: 30)),
+              SizedBox(height: 50),
+              Text(author,
+                  style: TextStyle(fontSize: 20, color: Colors.grey)),
+              SizedBox(height: 120),
+              Center(
+                child: TextButton(
+                  onPressed: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Next Quote', style: TextStyle(color: Colors.grey[50])),
+                      SizedBox(width: 10),
+                      Icon(Icons.arrow_forward_rounded, color: Colors.grey[50]),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            SizedBox(height: 75),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  quote = "This is a new quote";
-                });
-              },
-              child: Text(
-                "Next Quote",
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.red[400],
-                fixedSize: Size(200, 50),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
