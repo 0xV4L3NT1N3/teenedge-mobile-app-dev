@@ -12,8 +12,8 @@ class _MyAppState extends State<MyApp> {
 
   // variables holding quote and author data, set to a sample at first
 
-  String quote = 'Your goal is not to be Winston Churchill or Nelson Mandela. It\'s to be you.';
-  String author = 'Chris Anderson';
+  String quote = 'Thought Vitamins';
+  String author = 'by 0xV4L3NT1N3';
 
   @override
   Widget build(BuildContext context) {
