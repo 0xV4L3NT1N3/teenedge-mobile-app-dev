@@ -10,31 +10,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  // variables holding quote and author data, set to loading... at first
+  // variables holding quote and author data, set to a sample at first
 
-  String quote = 'loading ...';
-  String author = 'loading ...';
-
-  // get quote API data, store the data above
-
-  void getQuote () async {
-    QuoteAPI newQuote = QuoteAPI();
-    Map data = await newQuote.getData();
-    setState(() {
-      quote = data["content"];
-      author = data["author"];
-    });
-  }
-
-  @override
-  void initState() {
-
-    // get quote on start
-
-    super.initState();
-    getQuote();
-
-  }
+  String quote = 'Your goal is not to be Winston Churchill or Nelson Mandela. It\'s to be you.';
+  String author = 'Chris Anderson';
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +21,11 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          leading: Icon(Icons.drive_file_rename_outline, size: 30, color: Colors.black54),
+          leading: Icon(Icons.drive_file_rename_outline,
+              size: 30, color: Colors.black54),
           centerTitle: true,
-          title: Text('Minimal Quotes', style: TextStyle(color: Colors.black54)),
+          title:
+              Text('Minimal Quotes', style: TextStyle(color: Colors.black54)),
           backgroundColor: Colors.grey[50],
           elevation: 0,
         ),
@@ -54,19 +35,29 @@ class _MyAppState extends State<MyApp> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(quote,
-                  style: TextStyle(fontSize: 30)),
+              Text(quote, style: TextStyle(fontSize: 30)),
               SizedBox(height: 50),
-              Text(author,
-                  style: TextStyle(fontSize: 20, color: Colors.grey)),
+              Text(author, style: TextStyle(fontSize: 20, color: Colors.grey)),
               SizedBox(height: 120),
               Center(
                 child: TextButton(
-                  onPressed: () {},
+                  style: TextButton.styleFrom(backgroundColor: Colors.black54),
+                  onPressed: () async {
+
+                    // call the getData function, and update quote variables
+
+                    Map data = await getData();
+                    setState(() {
+                      quote = data["content"];
+                      author = data["author"];
+                    });
+
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Next Quote', style: TextStyle(color: Colors.grey[50])),
+                      Text('Next Quote',
+                          style: TextStyle(color: Colors.grey[50])),
                       SizedBox(width: 10),
                       Icon(Icons.arrow_forward_rounded, color: Colors.grey[50]),
                     ],
